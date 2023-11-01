@@ -3,8 +3,7 @@ WORKDIR /usr/src/app
 COPY package*.json .
 COPY . .
 RUN npm install
-RUN npm run build --configuration=production
-
+RUN npm run  build 
 #Production stage
 FROM nginx:alpine
 # Copier les fichiers de build de l'application Angular dans le répertoire NGINX

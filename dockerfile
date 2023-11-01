@@ -9,7 +9,7 @@ RUN npm run  build
 # Étape de production
 FROM nginx:alpine
 # Copier les fichiers de build générés à partir de l'emplacement "dist/summer-workshop-angular"
-COPY --from=build /usr/src/app/dist/summer-workshop-angular /usr/share/nginx/html
+COPY --from=build /dist/summer-workshop-angular /usr/share/nginx/html
 # Exposer le port 80
 EXPOSE 80
 # Commande pour démarrer NGINX

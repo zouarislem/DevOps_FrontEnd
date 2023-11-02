@@ -4,7 +4,7 @@ services:
   backend:
     image: islemzouuuu/my-backend-image:latest
     ports:
-      - "8081:8082"
+      - "80:8082"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root

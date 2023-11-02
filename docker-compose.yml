@@ -15,7 +15,7 @@ services:
   frontend:
     image: islemzouuuu/my-angular-app
     ports:
-      - "80:80"
+      - "8000:80"
     networks:
       - app-network  
 

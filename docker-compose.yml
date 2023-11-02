@@ -13,7 +13,7 @@ services:
       - app-network 
 
   frontend:
-    image: islemzouuuu/my-frontend-image:latest
+    image: islemzouuuu/my-angular-app
     ports:
       - "80:80"
     networks:

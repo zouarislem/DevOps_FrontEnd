@@ -4,7 +4,10 @@ services:
   backend:
     image: islemzouuuu/my-backend-image:latest
     ports:
-      - "80:8082"
+      - "8081:80"
+    restart: always 
+    depends_on:
+      - mysql
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
@@ -15,9 +18,13 @@ services:
   frontend:
     image: islemzouuuu/my-angular-app
     ports:
-      - "8000:80"
+      - "80:80"
+    restart:  always
+    depends_on:
+      -  backend
     networks:
-      - app-network  
+      - app-network
+      - frontend
 
   mysql:
     image: mysql:5.7
@@ -26,6 +33,7 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Note that the value should be a string
       MYSQL_DATABASE: devops
+      MYSQL_ROOT_PASSWORD:
     volumes:
       - mysql_data:/mysql_data
     networks:
@@ -36,4 +44,5 @@ volumes:
 
 networks:
   app-network:
-    driver: bridge  
+    driver: bridge
+  frontend:  

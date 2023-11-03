@@ -1,47 +1,45 @@
-version: '3.8'
-
+version: '3'
 services:
-  backend:
-    image: islemzouuuu/my-backend-image:latest
+  mysql:
+    image: mysql:latest
+    container_name: devops-db
     ports:
-      - "8081:8082"
-    restart: always 
-    depends_on:
-      - mysql
+      - "3306:3306"  # Map host port 3306 to container port 3306
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: devops
+    volumes:
+      - ./data.sql:/docker-entrypoint-initdb.d/data.sql
+    networks:
+      - my-network
+
+  spring:
+    image: islemzouuuu/my-backend-image:latest
+    container_name: spring-back-project
+    ports:
+      - "8081:8081"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: # You need to specify a password here
+      SPRING_DATASOURCE_PASSWORD:
+    depends_on:
+      mysql
     networks:
-      - app-network 
+      - my-network
+    volumes:
+      - ./backend-data:/app/data
 
-  frontend:
+  angular:
     image: islemzouuuu/my-angular-app
+    container_name: angular-front-project
     ports:
       - "80:80"
-    restart:  always
     depends_on:
-      - backend
+      - spring
     networks:
-      - app-network
-      - frontend
-
-  mysql:
-    image: mysql:5.7
-    ports:
-      - "3333:3306"
-    environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Note that the value should be a string
-      MYSQL_DATABASE: devops
-      MYSQL_ROOT_PASSWORD:
+      - my-network
     volumes:
-      - mysql_data:/mysql_data
-    networks:
-      - app-network  
-
-volumes:
-  mysql_data:
+      - ./frontend-data:/app/dist
 
 networks:
-  app-network:
-  frontend:  
+  my-network:

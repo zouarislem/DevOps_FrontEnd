@@ -33,7 +33,6 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  # Note that the value should be a string
       MYSQL_DATABASE: devops
-      MYSQL_ROOT_PASSWORD:
     volumes:
       - mysql_data:/mysql_data
     networks:

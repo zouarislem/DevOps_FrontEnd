@@ -13,6 +13,9 @@ scrape_configs:
   - job_name: 'prometheus'
     static_configs:
       - targets: ['prometheus:9090']
-  - job_name: 'node_exporter'
+  - job_name: 'mymultirepopipeline-frontend-1'
     static_configs:
-      - targets: ['node_exporter:9100']
+      - targets: ['mymultirepopipeline-frontend-1:80']
+ - job_name: 'mymultirepopipeline-backend-1'
+    static_configs:
+      - targets: ['mymultirepopipeline-backend-1:8082']      

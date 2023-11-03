@@ -1,21 +1,27 @@
-# my global config
 global:
-  scrape_interval: 15s # Set the scrape interval to every 15 seconds.
-  
-  # scrape_timeout is set to the global default (10s).
-  # Attach these labels to any time series or alerts when communicating with
-  # external systems (federation, remote storage, Alertmanager).
-  external_labels:
-      monitor: 'codelab-monitor'
-# A scrape configuration containing exactly one endpoint to scrape:
-# Here it's Prometheus itself.
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
 scrape_configs:
   - job_name: 'prometheus'
     static_configs:
-      - targets: ['prometheus:9090']
-  - job_name: 'mymultirepopipeline-frontend-1'
+      - targets: ['localhost:9090']
+  - job_name: 'jenkins'
+    metrics_path: /prometheus
     static_configs:
-      - targets: ['mymultirepopipeline-frontend-1:80']
- - job_name: 'mymultirepopipeline-backend-1'
-    static_configs:
-      - targets: ['mymultirepopipeline-backend-1:8082']      
+      - targets: ['192.168.33.10:8080']
+
+  # Add more scrape job configurations for other targets (e.g., your applications)
+
+# Alerting rules can be defined here
+# alerting_rules:
+#   - alert: HighRequestRate
+#     expr: rate(http_requests_total{job="your-job"}[5m]) > 100
+#     for: 5m
+#     labels:
+#       severity: warning
+#     annotations:
+#       summary: High request rate on {{ $labels.instance }}
+#       description: HTTP requests are exceeding the threshold.
+
+# Add more alerting rules as needed

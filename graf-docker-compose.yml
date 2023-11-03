@@ -1,26 +1,19 @@
 version: '3'
+
 services:
   prometheus:
-    image: prom/prometheus
-    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/config:/etc/prometheus
+      - ./prometheus/data:/prometheus
     ports:
       - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-    networks:
-      - monitoring
-
   grafana:
-    image: grafana/grafana
-    container_name: grafana
+    image: grafana/grafana:latest
+    volumes:
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/config:/etc/grafana
     ports:
       - "3000:3000"
-    environment:
-      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
-    networks:
-      - monitoring
-
-networks:
-  monitoring:
+    depends_on:
+      - prometheus

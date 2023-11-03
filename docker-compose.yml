@@ -11,7 +11,8 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/devops?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: # You need to specify a password here
+      SPRING_DATASOURCE_PASSWORD:
+      # You need to specify a password here
     networks:
       - app-network 
 

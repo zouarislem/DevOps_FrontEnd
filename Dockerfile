@@ -2,12 +2,12 @@
 FROM node:16 AS builder
 WORKDIR /app
 COPY . .
-COPY package.json package-lock.json ./
-RUN npm install
+RUN npm install --force
+# Copy your entire Angular project to the container
+# Build the Angular app
 RUN npm run build --prod
-# stage 2
-FROM nginx:alpine
-COPY nginx.conf  /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/dist/crudtuto-Front /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Stage 2: Create a lightweight image for serving the Angular app
+FROM nginx:1.25.2-alpine
+
+# Copy the built Angular app from the build stage to Nginx HTML directory
+COPY --from=builder /app/dist/summer-workshop-angular  /usr/share/nginx/html

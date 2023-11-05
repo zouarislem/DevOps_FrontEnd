@@ -1,16 +1,13 @@
-# Étape de construction
-FROM node:16 as build
-WORKDIR /usr/src/app
-COPY package*.json ./
+# stage 1
+FROM node:14.20.0 AS builder
+WORKDIR /app
 COPY . .
+COPY package.json package-lock.json ./
 RUN npm install
-RUN npm run  build 
-
-# Étape de production
+RUN npm run build --prod
+# stage 2
 FROM nginx:alpine
-# Copier les fichiers de build générés à partir de l'emplacement "dist/summer-workshop-angular"
-COPY --from=build /usr/src/app/dist/summer-workshop-angular /usr/share/nginx/html
-# Exposer le port 80
+COPY nginx.conf  /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/dist/crudtuto-Front /usr/share/nginx/html
 EXPOSE 80
-# Commande pour démarrer NGINX
 CMD ["nginx", "-g", "daemon off;"]

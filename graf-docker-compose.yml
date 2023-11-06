@@ -21,6 +21,11 @@ services:
       - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
     networks:
       - monitoring
-
+    volumes:
+      - grafana_data:
+        
 networks:
   monitoring:
+volumes:
+  grafana_data:
+  prometheus_data:
